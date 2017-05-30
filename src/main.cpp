@@ -106,8 +106,8 @@ int main()
         	{
         		LandmarkObs obs;
         		obs.x = x_sense[i];
-				obs.y = y_sense[i];
-				noisy_observations.push_back(obs);
+        		obs.y = y_sense[i];
+        		noisy_observations.push_back(obs);
         	}
 
 		  // Update the weights and resample
