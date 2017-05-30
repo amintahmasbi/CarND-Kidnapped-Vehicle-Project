@@ -101,7 +101,7 @@ void ParticleFilter::prediction(double delta_t, double std_pos[], double velocit
 
 }
 
-LandmarkObs ParticleFilter::transformObservation(Particle particle, LandmarkObs LocalObs)
+LandmarkObs transformObservation(Particle particle, LandmarkObs LocalObs)
 {
   LandmarkObs transformed_obs;
   transformed_obs.x = LocalObs.x*cos(particle.theta) - LocalObs.y*sin(particle.theta) + particle.x;
@@ -110,7 +110,12 @@ LandmarkObs ParticleFilter::transformObservation(Particle particle, LandmarkObs 
   return transformed_obs;
 }
 
-int ParticleFilter::dataAssociation(LandmarkObs observation, Map map_landmarks) {
+void ParticleFilter::dataAssociation(std::vector<LandmarkObs> predicted, std::vector<LandmarkObs>& observations)
+{
+
+}
+
+int findAssociation(LandmarkObs observation, Map map_landmarks) {
   // TODO: Find the predicted measurement that is closest to each observed measurement and assign the
   //   observed measurement to this particular landmark.
   // NOTE: this method will NOT be called by the grading code. But you will probably find it useful to
@@ -134,7 +139,7 @@ int ParticleFilter::dataAssociation(LandmarkObs observation, Map map_landmarks) 
   return closest_id;
 }
 
-double ParticleFilter::MVGaussian(Map::single_landmark_s predicted_landmark, double std_landmark[], LandmarkObs observation)
+double MVGaussian(Map::single_landmark_s predicted_landmark, double std_landmark[], LandmarkObs observation)
 {
   double exp_arg = -0.5 * ( pow((observation.x-predicted_landmark.x_f),2)/pow(std_landmark[0],2)+
       pow((observation.y-predicted_landmark.y_f),2)/pow(std_landmark[1],2) );
@@ -172,7 +177,7 @@ void ParticleFilter::updateWeights(double sensor_range, double std_landmark[],
     for (unsigned int j = 0; j < observations.size(); ++j) {
       LandmarkObs temp_obs = observations[j];
       LandmarkObs transformed_obs = transformObservation(current_particle,temp_obs);
-      transformed_obs.id = dataAssociation(transformed_obs, map_landmarks);
+      transformed_obs.id = findAssociation(transformed_obs, map_landmarks);
       Map::single_landmark_s predicted = map_landmarks.landmark_list[transformed_obs.id];
 
       //associations.push_back(transformed_obs.id);

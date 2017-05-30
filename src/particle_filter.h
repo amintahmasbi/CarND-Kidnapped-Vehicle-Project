@@ -72,33 +72,16 @@ public:
 	 */
 	void prediction(double delta_t, double std_pos[], double velocity, double yaw_rate);
 
-  /**
-   * transformObservation transforms the observation from particle coordinate system to Map coordinate system
-   * @param particle which contains current location of the particle in the Map
-   * @param observation of LocalObs in the particle coordinate system
-   * @output observation in the Map coordinate system
-   */
-	LandmarkObs transformObservation(Particle particle, LandmarkObs LocalObs);
-	
 	/**
 	 * dataAssociation Finds which observations correspond to which landmarks (likely by using
 	 *   a nearest-neighbors data association).
-	 * @param predicted landmark observation
-	 * @param Map landmarks
-	 * @output ID of the associated landMark
+   * @param predicted Vector of predicted landmark observations
+   * @param observations Vector of landmark observations
 	 */
-	int dataAssociation(LandmarkObs observation, Map map_landmarks);
+	void dataAssociation(std::vector<LandmarkObs> predicted, std::vector<LandmarkObs>& observations);
 
-  /**
-   * dataAssociation Finds which observations correspond to which landmarks (likely by using
-   *   a nearest-neighbors data association).
-   * @param predicted landmark on the Map (associated landmark)
-   * @param std_landmark[] Array of dimension 2 [standard deviation of range [m],
-   *   standard deviation of bearing [rad]]
-   * @param observation (measurement values)
-   * @output Probability of this observation being the predicted landmark
-   */
-	double MVGaussian(Map::single_landmark_s predicted_landmark, double std_landmark[], LandmarkObs observation);
+
+
 
 	/**
 	 * updateWeights Updates the weights for each particle based on the likelihood of the 
